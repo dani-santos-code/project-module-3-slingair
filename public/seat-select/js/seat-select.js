@@ -19,9 +19,8 @@ const renderOptions = async () => {
 
 renderOptions();
 
-const renderSeats = () => {
+const renderSeats = seats => {
   document.querySelector(".form-container").style.display = "block";
-
   const alpha = ["A", "B", "C", "D", "E", "F"];
   for (let r = 1; r < 11; r++) {
     const row = document.createElement("ol");
@@ -31,17 +30,36 @@ const renderSeats = () => {
     for (let s = 1; s < 7; s++) {
       const seatNumber = `${r}${alpha[s - 1]}`;
       const seat = document.createElement("li");
-      const seatOccupied = `<li><label class="seat"><span id="${seatNumber}" class="occupied">${seatNumber}</span></label></li>`;
-      const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
-      seat.innerHTML = seatAvailable;
-      row.appendChild(seat);
+      const seatInfo = seats.find(el => el.id === seatNumber);
+      if (seatInfo) {
+        if (seatInfo.isAvailable) {
+          const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
+          seat.innerHTML = seatAvailable;
+          row.appendChild(seat);
+        } else {
+          const seatOccupied = `<li><label class="seat"><span id="${seatNumber}" class="occupied">${seatNumber}</span></label></li>`;
+          seat.innerHTML = seatOccupied;
+          row.appendChild(seat);
+        }
+      }
     }
   }
-
   let seatMap = document.forms["seats"].elements["seat"];
   seatMap.forEach(seat => {
     seat.onclick = () => {
       selection = seat.value;
+      const seatInfo = seats.find(el => el.id === seat.value);
+      if (seatInfo) {
+        if (seatInfo.isAvailable) {
+          console.log("YAY!!!!");
+          // here we should make a call to the server to assign user to a seat
+          // also post to the BE isAvailable false, so other users cannot sit
+          //   window.location.href = "/confirmed";
+          console.log(seatInfo.isAvailable);
+        } else {
+          console.log("false");
+        }
+      }
       seatMap.forEach(x => {
         if (x.value !== seat.value) {
           document.getElementById(x.value).classList.remove("selected");
@@ -54,26 +72,17 @@ const renderSeats = () => {
   });
 };
 
-const toggleFormContent = event => {
-  const flightNumber = flightInput.value;
-  //   console.log("toggleFormContent: ", flightNumber);
-  //   console.log("HERE!!");
-
-  // TODO: contact the server to get the seating availability
-  //      - only contact the server if the flight number is this format 'SA###'.
-  //      - Do I need to create an error message if the number is not valid?
-
-  // TODO: Pass the response data to renderSeats to create the appropriate seat-type.
-  renderSeats();
-};
-
 const handleConfirmSeat = async () => {
   const flightNumber = event.target.value || null;
   const response = await fetch(`/seats-available/${flightNumber}`);
   const seats = await response.json();
-  renderSeats();
-  console.log(seats);
+  renderSeats(seats);
 };
 
-// flightInput.addEventListener("keydown", handleConfirmSeat);
+const handleConfirmSubmission = async () => {
+  event.preventDefault();
+  // query the user firstName, lastName
+  // get the Seat nummnber to Assign to the user
+};
+
 flightSelect.addEventListener("change", handleConfirmSeat);

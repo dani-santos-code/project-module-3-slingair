@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const { flights } = require("./test-data/flightSeating");
-
+const { reservations } = require.resolve("./test-data/reservations.js");
 const PORT = process.env.PORT || 8000;
 
 express()
@@ -34,6 +34,9 @@ express()
   })
   .get("/seats-available/:flightNumber", (req, res) => {
     const { flightNumber } = req.params;
-    res.status(200).json({ [flightNumber]: flights[flightNumber] });
+    res.status(200).json(flights[flightNumber]);
+    //   res.status(200).json({ [flightNumber]: flights[flightNumber] });
   })
+  .get("/confirmed", (req, res) => {})
+
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
