@@ -79,10 +79,33 @@ const handleConfirmSeat = async () => {
   renderSeats(seats);
 };
 
-const handleConfirmSubmission = async () => {
+const handleConfirmSubmission = event => {
   event.preventDefault();
-  // query the user firstName, lastName
-  // get the Seat nummnber to Assign to the user
+  const givenName = document.getElementById("givenName");
+  const surname = document.getElementById("surname");
+  const email = document.getElementById("email");
+  const data = {
+    givenName: givenName.value,
+    surname: surname.value,
+    email: email.value,
+    seat: selection,
+    flight: document.getElementById("flight-select-selector").value
+  };
+
+  fetch("/confirm", {
+    method: "POST",
+    mode: "cors",
+    cache: "no-cache",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+    .then(res => res.json)
+    .then(data => {
+      window.location.href = "/seat-select/confirmed.html";
+    });
 };
 
 flightSelect.addEventListener("change", handleConfirmSeat);
