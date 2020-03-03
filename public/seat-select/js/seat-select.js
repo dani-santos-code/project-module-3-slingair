@@ -101,11 +101,9 @@ const handleConfirmSubmission = event => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
-  })
-    .then(res => res.json)
-    .then(data => {
-      window.location.href = "/seat-select/confirmed.html";
-    });
+  }).then(() => {
+    window.location.href = "/seat-select/confirmed.html";
+  });
 };
 
 flightSelect.addEventListener("change", handleConfirmSeat);

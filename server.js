@@ -56,5 +56,15 @@ express()
   .get("/reservations", (req, res) => {
     res.send(reservations);
   })
+  .get("/users/:userId", (req, res) => {
+    const { userId } = req.params;
+    res.redirect(`/seat-select/view-reservation.html?id=${userId}`);
+  })
+
+  .get("/userinfo", (req, res) => {
+    const { id } = req.query;
+    const userById = reservations.find(user => user.id === id);
+    res.send({ userById });
+  })
 
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
