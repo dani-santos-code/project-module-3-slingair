@@ -7,6 +7,9 @@ const getReservationsInfo = async () => {
   const queryString = window.location.search;
   const userId = queryString.replace("?id=", "");
   const response = await fetch(`/userinfo?id=${userId}`);
+  //   const response = await fetch(
+  //     `/https://journeyedu.herokuapp.com?/slingair/users?id=${userId}`
+  //   );
   const { userById } = await response.json();
   flightId.innerText = userById.flight;
   seat.innerText = userById.seat;

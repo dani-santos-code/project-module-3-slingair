@@ -6,10 +6,19 @@ const flightSelect = document.getElementById("flight-select-selector");
 let selection = "";
 
 const renderOptions = async () => {
-  const response = await fetch("/flightIds");
-  const flightIds = await response.json();
-
-  flightIds.forEach(id => {
+  // const response = await fetch("/flightIds");
+  // const flightIds = await response.json();
+  // flightIds.forEach(id => {
+  //   const option = document.createElement("option");
+  //   option.value = id;
+  //   option.innerText = id;
+  //   flightSelect.appendChild(option);
+  // });
+  const response = await fetch(
+    "https://journeyedu.herokuapp.com/slingair/flights"
+  );
+  const { flights } = await response.json();
+  flights.forEach(id => {
     const option = document.createElement("option");
     option.value = id;
     option.innerText = id;
@@ -52,9 +61,6 @@ const renderSeats = seats => {
       if (seatInfo) {
         if (seatInfo.isAvailable) {
           console.log("YAY!!!!");
-          // here we should make a call to the server to assign user to a seat
-          // also post to the BE isAvailable false, so other users cannot sit
-          //   window.location.href = "/confirmed";
           console.log(seatInfo.isAvailable);
         } else {
           console.log("false");
@@ -74,9 +80,14 @@ const renderSeats = seats => {
 
 const handleConfirmSeat = async () => {
   const flightNumber = event.target.value || null;
-  const response = await fetch(`/seats-available/${flightNumber}`);
+  // const response = await fetch(`/seats-available/${flightNumber}`);
+  // const seats = await response.json();
+  const response = await fetch(
+    `https://journeyedu.herokuapp.com/slingair/flights/${flightNumber}`
+  );
   const seats = await response.json();
-  renderSeats(seats);
+  // console.log(seats[flightNumber]);
+  renderSeats(seats[flightNumber]);
 };
 
 const handleConfirmSubmission = event => {
@@ -91,12 +102,22 @@ const handleConfirmSubmission = event => {
     seat: selection,
     flight: document.getElementById("flight-select-selector").value
   };
+  console.log(data);
 
+  // fetch("/confirm", {
+  //   method: "POST",
+  //   mode: "cors",
+  //   cache: "no-cache",
+  //   credentials: "same-origin",
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify(data)
+  // }).then(() => {
+  //   window.location.href = "/seat-select/confirmed.html";
+  // });
   fetch("/confirm", {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json"
     },

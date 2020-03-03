@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const uniqid = require("uniqid");
-const fs = require("fs");
+const request = require("request-promise");
 const { flights } = require("./test-data/flightSeating");
 const { reservations } = require("./test-data/reservations.js");
 const PORT = process.env.PORT || 8000;
@@ -39,29 +39,55 @@ express()
     res.status(200).json(flights[flightNumber]);
     //   res.status(200).json({ [flightNumber]: flights[flightNumber] });
   })
-  .post("/confirm", (req, res) => {
+  .post("/confirm", async (req, res) => {
     const { flight, seat, givenName, surname, email } = req.body;
-    const uniqueId = uniqid();
-    reservations.push({
-      uniqueId,
-      flight,
-      seat,
-      givenName,
-      surname,
-      email
-    });
-    res.redirect("/seat-select/confirmed.html");
+    // const uniqueId = uniqid();
+    // reservations.push({
+    //   uniqueId,
+    //   flight,
+    //   seat,
+    //   givenName,
+    //   surname,
+    //   email
+    // });
+    const checkSeatAvailability = await request(
+      `https://journeyedu.herokuapp.com/slingair/flights/${flight}/${seat}`
+    );
+    const { isAvailable } = await JSON.parse(checkSeatAvailability);
+
+    const options = {
+      method: "POST",
+      uri: "https://journeyedu.herokuapp.com/slingair/users",
+      body: {
+        flight,
+        seat,
+        givenName,
+        surname,
+        email
+      },
+      json: true
+    };
+    if (isAvailable) {
+      try {
+        const data = await request(options);
+        const id = await data.reservation.id;
+        res.redirect(`/seat-select/confirmed.html`);
+      } catch (e) {
+        console.log(e.message.message);
+      }
+    }
   })
 
   .get("/reservations", (req, res) => {
     res.send(reservations);
   })
+
   .get("/users/:userId", (req, res) => {
     const { userId } = req.params;
     res.redirect(`/seat-select/view-reservation.html?id=${userId}`);
   })
 
-  .get("/userinfo", (req, res) => {
+  .get("/userinfo", async (req, res) => {
     const { id } = req.query;
     const userById = reservations.find(user => user.id === id);
     res.send({ userById });
