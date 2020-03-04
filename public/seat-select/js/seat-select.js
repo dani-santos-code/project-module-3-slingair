@@ -18,12 +18,15 @@ const renderOptions = async () => {
     "https://journeyedu.herokuapp.com/slingair/flights"
   );
   const { flights } = await response.json();
-  flights.forEach(id => {
-    const option = document.createElement("option");
-    option.value = id;
-    option.innerText = id;
-    flightSelect.appendChild(option);
-  });
+  // console.log("HERE", flights);
+  if (flights.length > 1) {
+    flights.forEach(id => {
+      const option = document.createElement("option");
+      option.value = id;
+      option.innerText = id;
+      flightSelect.appendChild(option);
+    });
+  }
 };
 
 renderOptions();
