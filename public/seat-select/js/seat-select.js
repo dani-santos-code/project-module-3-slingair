@@ -71,6 +71,10 @@ const renderSeats = seats => {
 };
 
 const handleConfirmSeat = async () => {
+  event.preventDefault();
+  if ((document.querySelector(".form-container").style.display = "block")) {
+    document.querySelector("#seats-section").innerHTML = "";
+  }
   const flightNumber = event.target.value || null;
   const response = await fetch(`/seats-available/${flightNumber}`);
   const seats = await response.json();
