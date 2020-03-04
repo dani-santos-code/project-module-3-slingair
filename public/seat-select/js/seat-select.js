@@ -115,7 +115,6 @@ const handleId = async () => {
     `https://journeyedu.herokuapp.com/slingair/users/${userId}`
   );
   const { data } = await response.json();
-  // console.log(data.id);
   window.location.href = `/seat-select/view-reservation.html?id=${data.id}`;
 };
 
