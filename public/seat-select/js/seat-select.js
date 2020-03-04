@@ -31,7 +31,7 @@ const renderOptions = async () => {
 renderOptions();
 
 const renderSeats = async seats => {
-  // console.log(seats);
+  console.log(seats);
   document.querySelector(".form-container").style.display = "block";
   const alpha = ["A", "B", "C", "D", "E", "F"];
   for (let r = 1; r < 11; r++) {
@@ -83,6 +83,11 @@ const renderSeats = async seats => {
 };
 
 const handleConfirmSeat = async () => {
+  // console.log("called");
+  event.preventDefault();
+  if ((document.querySelector(".form-container").style.display = "block")) {
+    document.querySelector("#seats-section").innerHTML = "";
+  }
   const flightNumber = event.target.value || null;
   // const response = await fetch(`/seats-available/${flightNumber}`);
   // const seats = await response.json();
