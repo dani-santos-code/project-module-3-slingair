@@ -305,3 +305,19 @@ input {
 .label-uuid {
   margin-left: 20px;
 }
+
+@media (min-width: 500px) and (max-width: 1020px) {
+  .flight-select {
+    flex-direction: row;
+    height: 200px;
+  }
+  .label-uuid {
+    margin-left: 0px;
+  }
+  .flight-select-selector {
+    width: 15em;
+  }
+  label {
+    font-size: 20px;
+  }
+}
