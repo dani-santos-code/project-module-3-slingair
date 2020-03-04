@@ -48,7 +48,7 @@ const renderSeats = seats => {
   seatMap.forEach(seat => {
     seat.onclick = () => {
       selection = seat.value;
-      const seatInfo = seats.find(el => el.id === seat.value);
+      const seatInfo = seats.find(el => el.id === selection);
       if (seatInfo) {
         if (seatInfo.isAvailable) {
           console.log("YAY!!!!");
@@ -56,8 +56,6 @@ const renderSeats = seats => {
           // also post to the BE isAvailable false, so other users cannot sit
           //   window.location.href = "/confirmed";
           console.log(seatInfo.isAvailable);
-        } else {
-          console.log("false");
         }
       }
       seatMap.forEach(x => {
@@ -76,6 +74,7 @@ const handleConfirmSeat = async () => {
   const flightNumber = event.target.value || null;
   const response = await fetch(`/seats-available/${flightNumber}`);
   const seats = await response.json();
+  // console.log(seats);
   renderSeats(seats);
 };
 

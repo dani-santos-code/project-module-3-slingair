@@ -4,7 +4,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const uniqid = require("uniqid");
-const fs = require("fs");
 const { flights } = require("./test-data/flightSeating");
 const { reservations } = require("./test-data/reservations.js");
 const PORT = process.env.PORT || 8000;
