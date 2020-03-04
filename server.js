@@ -4,8 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const request = require("request-promise");
-const { flights } = require("./test-data/flightSeating");
 const PORT = process.env.PORT || 8000;
+
 express()
   .use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -24,14 +24,6 @@ express()
 
   .get("/", (req, res) => {
     res.redirect("/seat-select/index.html");
-  })
-  .get("/flightIds", (req, res) => {
-    const flightIds = Object.keys(flights);
-    res.status(200).json(flightIds);
-  })
-  .get("/seats-available/:flightNumber", (req, res) => {
-    const { flightNumber } = req.params;
-    res.status(200).json(flights[flightNumber]);
   })
   .post("/confirm", async (req, res) => {
     const { flight, seat, givenName, surname, email } = req.body;

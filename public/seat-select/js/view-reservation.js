@@ -5,5 +5,5 @@ const email = document.getElementById("email");
 
 let params = new URL(document.location).searchParams;
 let userId = params.get("id");
-const reservation = new Confirmation(userId, flightId, seat, name, email);
+const reservation = new Reservation(userId, flightId, seat, name, email);
 reservation.renderUserInfo();

@@ -84,6 +84,7 @@ input {
   background: var(--cadmium-red);
   height: 80px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   padding: var(--page-padding);
   margin-bottom: var(--page-padding);
@@ -285,4 +286,22 @@ input {
   cursor: pointer;
   font-size: 15px;
   font-family: "Kosugi";
+}
+
+.uuid-input {
+  cursor: pointer;
+  font-size: 15px;
+  font-family: "Kosugi";
+  border-radius: 0.25em;
+  margin-left: 10px;
+  padding: 0 0.5em;
+  color: black;
+  width: 10em;
+  height: 3em;
+  line-height: 3;
+  background: #fff0eb;
+}
+
+.label-uuid {
+  margin-left: 20px;
 }

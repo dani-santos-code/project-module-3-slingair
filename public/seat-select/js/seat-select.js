@@ -2,6 +2,7 @@ const flightInput = document.getElementById("flight");
 const seatsDiv = document.getElementById("seats-section");
 const confirmButton = document.getElementById("confirm-button");
 const flightSelect = document.getElementById("flight-select-selector");
+const idInput = document.getElementById("uuid");
 
 let selection = "";
 
@@ -108,4 +109,15 @@ const handleConfirmSubmission = event => {
   });
 };
 
+const handleId = async () => {
+  userId = event.target.value;
+  const response = await fetch(
+    `https://journeyedu.herokuapp.com/slingair/users/${userId}`
+  );
+  const { data } = await response.json();
+  // console.log(data.id);
+  window.location.href = `/seat-select/view-reservation.html?id=${data.id}`;
+};
+
 flightSelect.addEventListener("change", handleConfirmSeat);
+idInput.addEventListener("change", handleId);
