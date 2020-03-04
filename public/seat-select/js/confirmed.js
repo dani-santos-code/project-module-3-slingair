@@ -11,11 +11,6 @@ const getReservationsInfo = async () => {
   seat.innerText = lastElement.seat;
   name.innerText = `${lastElement.givenName} ${lastElement.surname}`;
   email.innerText = lastElement.email;
-  // const { userById } = await response.json();
-  // flightId.innerText = userById.flight;
-  // seat.innerText = userById.seat;
-  // name.innerText = `${userById.givenName} ${userById.surname}`;
-  // email.innerText = userById.email;
 };
 
 getReservationsInfo();

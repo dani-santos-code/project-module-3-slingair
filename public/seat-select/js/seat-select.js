@@ -18,7 +18,6 @@ const renderOptions = async () => {
     "https://journeyedu.herokuapp.com/slingair/flights"
   );
   const { flights } = await response.json();
-  // console.log("HERE", flights);
   if (flights.length > 1) {
     flights.forEach(id => {
       const option = document.createElement("option");
@@ -31,7 +30,8 @@ const renderOptions = async () => {
 
 renderOptions();
 
-const renderSeats = seats => {
+const renderSeats = async seats => {
+  // console.log(seats);
   document.querySelector(".form-container").style.display = "block";
   const alpha = ["A", "B", "C", "D", "E", "F"];
   for (let r = 1; r < 11; r++) {
@@ -42,7 +42,7 @@ const renderSeats = seats => {
     for (let s = 1; s < 7; s++) {
       const seatNumber = `${r}${alpha[s - 1]}`;
       const seat = document.createElement("li");
-      const seatInfo = seats.find(el => el.id === seatNumber);
+      const seatInfo = await seats.find(el => el.id === seatNumber);
       if (seatInfo) {
         if (seatInfo.isAvailable) {
           const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
@@ -57,15 +57,15 @@ const renderSeats = seats => {
     }
   }
   let seatMap = document.forms["seats"].elements["seat"];
-  console.log(seatMap);
+  // console.log(seatMap);
   seatMap.forEach(seat => {
     seat.onclick = () => {
       selection = seat.value;
       const seatInfo = seats.find(el => el.id === seat.value);
       if (seatInfo) {
         if (seatInfo.isAvailable) {
-          console.log("YAY!!!!");
-          console.log(seatInfo.isAvailable);
+          // console.log("YAY!!!!");
+          // console.log(seatInfo.isAvailable);
         } else {
           console.log("false");
         }
@@ -90,7 +90,7 @@ const handleConfirmSeat = async () => {
     `https://journeyedu.herokuapp.com/slingair/flights/${flightNumber}`
   );
   const seats = await response.json();
-  // console.log(seats[flightNumber]);
+  // console.log(seats);
   renderSeats(seats[flightNumber]);
 };
 const handleConfirmSubmission = event => {
@@ -126,7 +126,7 @@ const handleConfirmSubmission = event => {
     },
     body: JSON.stringify(data)
   }).then(() => {
-    window.location.href = "/seat-select/confirmed.html";
+    window.location.href = `/seat-select/confirmed.html`;
   });
 };
 

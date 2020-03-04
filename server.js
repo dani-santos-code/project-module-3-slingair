@@ -8,7 +8,7 @@ const request = require("request-promise");
 const { flights } = require("./test-data/flightSeating");
 const { reservations } = require("./test-data/reservations.js");
 const PORT = process.env.PORT || 8000;
-const currentUser = "";
+const currentUserId = "";
 express()
   .use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -30,7 +30,7 @@ express()
   })
   .get("/flightIds", (req, res) => {
     const flightIds = Object.keys(flights);
-    console.log(flightIds);
+    // console.log(flightIds);
 
     res.status(200).json(flightIds);
   })
@@ -50,7 +50,6 @@ express()
     //   surname,
     //   email
     // });
-    console.log(req.body);
     const checkSeatAvailability = await request(
       `https://journeyedu.herokuapp.com/slingair/flights/${flight}/${seat}`
     );
@@ -71,12 +70,10 @@ express()
     if (isAvailable) {
       try {
         const data = await request(options);
-        // console.log(data);
-        const { id } = await data.reservation;
-        console.log(id);
+        // const { id } = await data.reservation;
         res.redirect(`/seat-select/confirmed.html`);
       } catch (e) {
-        console.log(e.message.message);
+        console.log(e.message);
       }
     } else {
       res.send("Not Available");
@@ -88,7 +85,6 @@ express()
   })
 
   .get("/users/:userId", (req, res) => {
-    console.log(currentUser);
     const { userId } = req.params;
     res.redirect(`/seat-select/view-reservation.html?id=${userId}`);
   })
