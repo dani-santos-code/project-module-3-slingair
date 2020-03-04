@@ -54,6 +54,7 @@ const renderSeats = seats => {
     }
   }
   let seatMap = document.forms["seats"].elements["seat"];
+  console.log(seatMap);
   seatMap.forEach(seat => {
     seat.onclick = () => {
       selection = seat.value;
@@ -89,7 +90,6 @@ const handleConfirmSeat = async () => {
   // console.log(seats[flightNumber]);
   renderSeats(seats[flightNumber]);
 };
-
 const handleConfirmSubmission = event => {
   event.preventDefault();
   const givenName = document.getElementById("givenName");
@@ -102,7 +102,7 @@ const handleConfirmSubmission = event => {
     seat: selection,
     flight: document.getElementById("flight-select-selector").value
   };
-  console.log(data);
+  // console.log(data);
 
   // fetch("/confirm", {
   //   method: "POST",

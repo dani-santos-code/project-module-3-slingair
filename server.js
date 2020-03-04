@@ -50,6 +50,7 @@ express()
     //   surname,
     //   email
     // });
+    console.log(req.body);
     const checkSeatAvailability = await request(
       `https://journeyedu.herokuapp.com/slingair/flights/${flight}/${seat}`
     );
@@ -70,11 +71,15 @@ express()
     if (isAvailable) {
       try {
         const data = await request(options);
+        console.log(data);
         const id = await data.reservation.id;
+        console.log(id);
         res.redirect(`/seat-select/confirmed.html`);
       } catch (e) {
         console.log(e.message.message);
       }
+    } else {
+      res.send("Not Available");
     }
   })
 
