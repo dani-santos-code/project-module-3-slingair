@@ -8,7 +8,7 @@ const request = require("request-promise");
 const { flights } = require("./test-data/flightSeating");
 const { reservations } = require("./test-data/reservations.js");
 const PORT = process.env.PORT || 8000;
-
+const currentUser = "";
 express()
   .use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -71,8 +71,8 @@ express()
     if (isAvailable) {
       try {
         const data = await request(options);
-        console.log(data);
-        const id = await data.reservation.id;
+        // console.log(data);
+        const { id } = await data.reservation;
         console.log(id);
         res.redirect(`/seat-select/confirmed.html`);
       } catch (e) {
@@ -88,6 +88,7 @@ express()
   })
 
   .get("/users/:userId", (req, res) => {
+    console.log(currentUser);
     const { userId } = req.params;
     res.redirect(`/seat-select/view-reservation.html?id=${userId}`);
   })
