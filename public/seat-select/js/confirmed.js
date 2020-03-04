@@ -4,13 +4,16 @@ const name = document.getElementById("name");
 const email = document.getElementById("email");
 
 const getReservationsInfo = async () => {
-  const response = await fetch("/reservations");
-  const data = await response.json();
-  const lastElement = data[data.length - 1];
-  flightId.innerText = lastElement.flight;
-  seat.innerText = lastElement.seat;
-  name.innerText = `${lastElement.givenName} ${lastElement.surname}`;
-  email.innerText = lastElement.email;
+  let params = new URL(document.location).searchParams;
+  let id = params.get("id");
+  const response = fetch(
+    `https://journeyedu.herokuapp.com/slingair/users/${id}`
+  ).then(res => res.json());
+  const { data } = await response;
+  flightId.innerText = data.flight;
+  seat.innerText = data.seat;
+  name.innerText = `${data.givenName} ${data.surname}`;
+  email.innerText = data.email;
 };
 
 getReservationsInfo();
